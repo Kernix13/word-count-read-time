@@ -13,11 +13,6 @@
   Domain Path: /languages
 */
 
-include( plugin_dir_path( __FILE__ ) . 'includes/checkboxHTML.php');
-include( plugin_dir_path( __FILE__ ) . 'includes/headlineHTML.php');
-include( plugin_dir_path( __FILE__ ) . 'includes/locationHTML.php');
-include( plugin_dir_path( __FILE__ ) . 'includes/formHTML.php');
-
 class WordCountAndTimePlugin {
   function __construct() {
     add_action('admin_menu', array($this, 'adminPage'));
@@ -27,7 +22,7 @@ class WordCountAndTimePlugin {
   }
 
   function languages() {
-    load_plugin_textdomain('wcpdomain', false, dirname(plugin_basename(__FILE__)) . '/languages');
+    load_plugin_textdomain('wcrtdomain', false, dirname(plugin_basename(__FILE__)) . '/languages');
   }
 
   function ifWrap($content) {
@@ -101,12 +96,44 @@ class WordCountAndTimePlugin {
   }
 
   // checkboxHTML
+  function checkboxHTML($args) { 
+    ?>
+      <input type="checkbox" name="<?php echo $args['theName'] ?>" value="1" <?php checked(get_option($args['theName']), '1') ?>>
+    <?php 
+  }
 
   // headlineHTML
+  function headlineHTML() { 
+    ?>
+      <input type="text" name="wcrt_headline" value="<?php echo esc_attr(get_option('wcrt_headline')) ?>">
+    <?php 
+  }
 
   // locationHTML
+  function locationHTML() { 
+    ?>
+      <select name="wcrt_location">
+        <option value="0" <?php selected(get_option('wcrt_location'), '0') ?>>Beginning of post</option>
+        <option value="1" <?php selected(get_option('wcrt_location'), '1') ?>>End of post</option>
+      </select>
+    <?php 
+  }
 
   // formHTML
+  function formHTML() { 
+    ?>
+      <div class="wrap">
+        <h1>Word Count Settings</h1>
+        <form action="options.php" method="POST">
+        <?php
+          settings_fields('wordcountplugin');
+          do_settings_sections('word-count-settings-page');
+          submit_button();
+        ?>
+        </form>
+      </div>
+    <?php 
+  }
 }
 
 $wordCountAndTimePlugin = new WordCountAndTimePlugin();

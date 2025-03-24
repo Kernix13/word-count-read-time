@@ -1,4 +1,4 @@
-# Word Count Plugin for WordPress
+# Word Count and Readtime Plugin for WordPress
 
 > https://github.com/Kernix13/word-count-plugin.git
 
